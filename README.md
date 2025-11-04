@@ -1,74 +1,77 @@
-BootLeaf
-========
+# TURNAT
 
- - [Installation](#installation)
- - [Configuration](#configuration)
- - [Basemaps](#basemaps)
- - [Layers](#layers)
- - [Table of Contents](#table-of-contents)
- - [Identify](#identify)
- - [Query](#query)
- - [Filter](#filter)
- - [Custom code](#custom-code)
- - [ArcGIS authorisation](#authorisation)
- - [Known issues](#issues)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Basemaps](#basemaps)
+- [Layers](#layers)
+- [Table of Contents](#table-of-contents)
+- [Identify](#identify)
+- [Query](#query)
+- [Filter](#filter)
+- [Custom code](#custom-code)
+- [ArcGIS authorisation](#authorisation)
+- [Known issues](#issues)
 
 ### Introduction
 
-This is an update to the excellent [Bootleaf](https://github.com/bmcbride/bootleaf) code written by [Bryan McBride](https://github.com/bmcbride), which incorporates the responsive framework [Bootstrap](https://getbootstrap.com) with the lightweight [Leaflet](https://leafletjs.com) mapping API.
+Esta es una actualización del excelente [Bootleaf](https://github.com/bmcbride/bootleaf) del código escrito por [Bryan McBride](https://github.com/bmcbride), que incorpora el framework responsivo [Bootstrap](https://getbootstrap.com) con el ligero y eficiente [Leaflet](https://leafletjs.com) API de mapas. También Una versión de código abierto de la bifurcación Bootleaf de IAG.
 
-This update decouples the application logic from the map contents, and so provides a framework for rapid creation of new maps by simply updating a configuration file.
+Esta actualización separa la lógica de la aplicación del contenido del mapa, proporcionando así un marco para la creación rápida de nuevos mapas con tan solo actualizar un archivo de configuración.
 
 ![bootleaf screenshot](https://i.imgur.com/DZbDs86.png)
 
-Support is provided for:
- - WMS tiled layers
- - WFS layers
- - GeoJSON layers
- - ArcGIS Server feature, dynamic and tiled layers
- - Clustering of WFS, GeoJSON and ArcGIS Server feature layers
+Se ofrece apoyo para:
 
-Note - WMS and WFS layers have been tested in GeoServer only. [CORS](https://suite.opengeo.org/docs/latest/sysadmin/cors/index.html) and [jsonp](https://www.gaiaresources.com.au/json-with-geoserver-and-leaflet/) should be enabled on GeoServer for best results.
+- WMS tiled layers (Capas de teselas)
+- WFS layers (Capas)
+- GeoJSON layers (Capas)
+- ArcGIS Server feature, dynamic and tiled layers (Función de Servidor, dinámicas y Capas de teselas)
+- Clustering of WFS, GeoJSON and ArcGIS Server feature layers (Agrupación de capas de entidades WFS, GeoJSON y ArcGIS Server)
 
-Note - Bootleaf uses the [Esri-Leaflet](https://esri.github.io/esri-leaflet/) plugin, in order to support ArcGIS layers and display Esri basemaps. Please note the [Esri usage terms](https://github.com/esri/esri-leaflet#terms) before using this.
+Nota - Las capas WMS y WFS solo se han probado en GeoServer. Para obtener los mejores resultados, se recomienda habilitar [CORS](https://suite.opengeo.org/docs/latest/sysadmin/cors/index.html) y [jsonp](https://www.gaiaresources.com.au/json-with-geoserver-and-leaflet/) en GeoServer.
 
-Additional functionality includes:
- - [Table of Contents](https://github.com/ismyrnow/Leaflet.groupedlayercontrol) with support for groups and radio buttons
- - Identify function for WMS and ArcGIS Dynamic layers
- - Query Widget, for finding features within ArcGIS Feature and Dynamic layers
- - Spatial Bookmarks
- - Address search using [OpenStreetMap](https://nominatim.openstreetmap.org/), Google or ArcGIS
- - Ability to share the map with current location and visible layers
- - Tooltips and info-windows
- - Simple labels within WFS and GeoJson layers
+Nota - Bootleaf utiliza el complemento [Esri-Leaflet](https://esri.github.io/esri-leaflet/), para admitir capas de ArcGIS y mostrar mapas base de Esri. Por favor, consulte los términos de uso de [Esri usage terms](https://github.com/esri/esri-leaflet#terms) antes de utilizarlo.
+
+Las funciones adicionales incluyen:
+
+- [Tabla de contenido](https://github.com/ismyrnow/Leaflet.groupedlayercontrol) compatible con soporte para grupos y botones de opción
+- Identificar la función para WMS y capas dinámicas de ArcGIS
+- Widget de consulta para encontrar entidades dentro de las capas de entidades y dinámicas de ArcGIS
+- Marcadores espaciales
+- Búsqueda de direcciones utilizando [OpenStreetMap](https://nominatim.openstreetmap.org/), Google o ArcGIS
+- Capacidad para compartir el mapa con la ubicación actual y las capas visibles
+- Información sobre herramientas y ventanas de información
+- Etiquetas simples dentro de capas WFS y GeoJSON
 
 The application comprises:
- - `index.html` - defines the elements on the page, including the map, sidebar, navigation, buttons, etc. References all of the other files
- - `config.js` - configuration file, which personalises each map. Specifies the starting extent, basemap, controls, and layers
- - `style.css` - over-writes the default styles to personalise the map
- - `custom.js` - adds custom functionality to personalise the map
- - `src/...` - the directory containing the core Bootleaf functionality
- - `data` - stores any local GeoJSON datasets which are not hosted on a server
+
+- `index.html` - Define los elementos de la página, incluyendo el mapa, la barra lateral, la navegación, los botones, entre otros. Hace referencia a todos los demás archivos
+- `config.js` - Archivo de configuración que personaliza cada mapa. Especifica la extensión inicial, el mapa base, los controles y las capas
+- `style.css` - Sobrescribe los estilos predeterminados para personalizar el mapa
+- `custom.js` - Añade funcionalidades personalizadas para personalizar el mapa
+- `src/...` - el directorio que contiene la funcionalidad principal de Bootleaf
+- `data` - Almacena cualquier conjunto de datos GeoJSON local que no esté alojado en un servidor
 
 ## [Installation](#installation)
 
-Use these steps to create a map based on the current version of the Bootleaf template:
+Siga estos pasos para crear un mapa basado en la versión actual de la plantilla Bootleaf:
 
-1. download the code from [here](https://github.com/iag-geo/bootleaf/archive/master.zip)
-2. unzip the file into a temp directory
-3. copy the _bootleaf_ directory into a suitable directory on your server
-4. rename the *bootleaf* folder to the name of your app (*your_app*)
-5. open your application via http://your_server/path/your_app and verify that it works correctly
+1. Descarga el código desde [aquí](https://github.com/gtoranzo/turnat/archive/turnat-master.zip)
+2. Descomprime el archivo en un directorio temporal
+3. Copia el directorio _bootleaf_ a un directorio adecuado en tu servidor
+4. Renombra la carpeta de _bootleaf_ con el nombre de tu aplicación (_your_app_)
+5. Abre tu aplicación a través de http://your_server/path/your_app y verifica que funciona correctamente
 
-**Deployment and upgrades**
-- to deploy your app to another server, copy the *your_app* directory to the server. This will include both the Bootleaf code (in the _src_ directory) and your custom app as a stand-alone package
-- in the future, to update your app to the latest version of the Bootleaf template, download the code again and replace the _src_ in your local version with the _src_ latest version (ensuring you don't over-write your custom config file)
+**Despliegue y actualizaciones**
+
+- Para desplegar tu aplicación en otro servidor, copia el directorio `your_app` al servidor. Esto incluirá tanto el código de Bootleaf (en el directorio `src`) como tu aplicación personalizada como un paquete independiente.
+- En el futuro, para actualizar tu aplicación a la última versión de la plantilla Bootleaf, descarga el código de nuevo y reemplaza el src en tu versión local con la última versión del src (asegurándote de no sobrescribir tu archivo de configuración personalizado).
 
 ## [Configuration](#configuration)
 
-All configuration options for the map are controlled via the *config.js* file, so open this file in your code editor and go for it!
+Todas las opciones de configuración del mapa se controlan mediante el archivo config.js. Ábrelo en tu editor de código y ¡manos a la obra!
 
-The format of this file is JSON, which uses key/value pairs holding parameters and their values, eg:
+El formato de este archivo es JSON, que utiliza pares clave/valor que contienen parámetros y sus valores, por ejemplo:
 
 ```
 "title": "Bootleaf template map",
@@ -81,7 +84,7 @@ The format of this file is JSON, which uses key/value pairs holding parameters a
 }
 ```
 
-When editing these values, ensure that the key *names* are quoted. *Textual values* should be quoted, but *numerical values and booleans* should not be quoted. Un-needed parameters may be commented out using /\* ... \*/ notation around the entire parameter.
+When editing these values, ensure that the key _names_ are quoted. _Textual values_ should be quoted, but _numerical values and booleans_ should not be quoted. Un-needed parameters may be commented out using /\* ... \*/ notation around the entire parameter.
 
 #### Parameter explanations
 
@@ -90,18 +93,18 @@ When editing these values, ensure that the key *names* are quoted. *Textual valu
 - `about` : displayed in the map's About panel
 - `bing_key` : a license key to use [Bing Maps basemap tiles](https://msdn.microsoft.com/en-us/library/ff428642.aspx)
 - `mapboxKey` : a license key to use [MapBox basemap tiles](https://www.mapbox.com/help/how-access-tokens-work/)
-- `controls` : used to configure individual map controls. If a control is commented out, it will not be shown. Valid positions are *topleft*, *topright*, *bottomleft*, *bottomright*
-	- `zoom` : specify the location of the zoom in/out buttons
-	- `leafletGeocoder` : configure the [geocoder](https://github.com/perliedman/leaflet-control-geocoder)
-		- `type`: `Google/OpenStreetMap/ArcGIS`
-		- `suffix`: an optional keyword to filter each search. eg, use "Australia" to tell the geocoder to search within Australia only
-		- `key`: when using the Google Maps option, specify your API key (https://developers.google.com/maps/documentation/geocoding/start#get-a-key)
-	- `TOC` : configure the default [table of contents](https://github.com/ismyrnow/Leaflet.groupedlayercontrol) (see below for further configuration options)
-	- `history` : display next/previous buttons on the map, to enable moving forward/back through the extent history
-	- `bookmarks` : spatial bookmarks may be saved to the config file, or added via the UI. In the latter case they're accessible via cookies on the current user's machine. Follow the pattern of the sample bookmarks to create new instances
+- `controls` : used to configure individual map controls. If a control is commented out, it will not be shown. Valid positions are _topleft_, _topright_, _bottomleft_, _bottomright_
+  - `zoom` : specify the location of the zoom in/out buttons
+  - `leafletGeocoder` : configure the [geocoder](https://github.com/perliedman/leaflet-control-geocoder)
+    - `type`: `Google/OpenStreetMap/ArcGIS`
+    - `suffix`: an optional keyword to filter each search. eg, use "Australia" to tell the geocoder to search within Australia only
+    - `key`: when using the Google Maps option, specify your API key (https://developers.google.com/maps/documentation/geocoding/start#get-a-key)
+  - `TOC` : configure the default [table of contents](https://github.com/ismyrnow/Leaflet.groupedlayercontrol) (see below for further configuration options)
+  - `history` : display next/previous buttons on the map, to enable moving forward/back through the extent history
+  - `bookmarks` : spatial bookmarks may be saved to the config file, or added via the UI. In the latter case they're accessible via cookies on the current user's machine. Follow the pattern of the sample bookmarks to create new instances
 - `activeTool` : a tool may optionally be configured as active when the map loads. Current options are `identify`, `queryWidget` (see below for more info) and `coordinate` (which reports the coordinates at the location clicked on the map)
 - `defaultIcon` : optionally, override the [default icon](https://leafletjs.com/reference-1.1.0.html#icon-default) which is a blue pin, for example to specify an alternate image, or to change the size and shape of the pin. This icon is used in the geocoding result display amongst other areas
-- `projections` - an array of [proj4js](https://proj4js.org/) projection definitions, which are used when projecting coordinates from other reference systems onto the map. Determine each layer's projection, then look up the details at https://spatialreference.org/. Add each layer's WKID to the `projections` array in the format:
+- `projections` - an array of [proj4js](https://proj4js.org/) definiciones de proyección, que se utilizan al proyectar coordenadas de otros sistemas de referencia sobre el mapa. Determine la proyección de cada capa y, a continuación, consulte los detalles en https://spatialreference.org/. Agrega el WKID de cada capa a `projections` arreglo matriz en el formato:
 
 ```
 "projections": [
@@ -109,24 +112,81 @@ When editing these values, ensure that the key *names* are quoted. *Textual valu
 	{4269: '+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs '}
 ]
 ```
-- `showIdentifyMarker` : `true/false` - when true, the location clicked on the map is shown in a popup. Default is true.
+
+- `showIdentifyMarker` : `true/false` - Si es verdadero, la ubicación seleccionada en el mapa se muestra en una ventana emergente. El valor predeterminado es verdadero.
+
+##### projections
+
+1. EPSG:4326 — Coordenadas geográficas internacionales (WGS84)
+
+Esta es la más usada en el mundo (GPS, Google Maps, etc.): +ellps=WGS84 está implícito en +datum=WGS84, así que no es necesario incluirlo explícitamente.
+
+2. Proyecciones de Cuba Norte basadas en NAD27
+
+En Cuba, históricamente se usan proyecciones Lambert Conformal Conic con datum NAD27, y existen dos variantes principales para "Cuba Norte", que difieren en sus parámetros de falso este/norte y latitudes estándar.
+
+- Opción A: EPSG:2085 – Cuba Norte (antigua, común en mapas oficiales)
+  Código EPSG: 2085
+  Nombre: Cuba Norte (NAD27)
+  Definición PROJ:
+
+  ```
+  2085: "+proj=lcc +lat_1=21.3 +lat_2=23.7 +lat_0=22.5 +lon_0=-81 +x_0=500000 +y_0=300000 +datum=NAD27 +units=m +no_defs"
+  ```
+
+- Opción B: EPSG:3795 – Cuba Norte (versión más moderna, usada en SIC / sistemas nacionales)
+  Código EPSG: 3795
+  Nombre: Cuba Norte (NAD27) — sí, ¡mismo nombre! Pero parámetros ligeramente distintos.
+  Definición PRO:
+
+  ```
+  3795: "+proj=lcc +lat_1=21.8 +lat_2=23.2 +lat_0=22.5 +lon_0=-81 +x_0=500000 +y_0=300000 +datum=NAD27 +units=m +no_defs"
+  ```
+
+Ambas usan:
+
+Proyección Lambert Conformal Conic (lcc)
+Datum NAD27
+Meridiano central: -81° (aprox. centro de Cuba)
+Falso este: 500000 m, falso norte: 300000 m
+La diferencia está en lat_1 y lat_2 (latitudes estándar), lo que afecta la escala y distorsión.
+
+Código final:
+
+```
+"projections": [
+  {
+    4326: "+proj=longlat +datum=WGS84 +no_defs"
+  },
+  {
+    2085: "+proj=lcc +lat_1=21.3 +lat_2=23.7 +lat_0=22.5 +lon_0=-81 +x_0=500000 +y_0=300000 +datum=NAD27 +units=m +no_defs"
+  },
+  {
+    3795: "+proj=lcc +lat_1=21.8 +lat_2=23.2 +lat_0=22.5 +lon_0=-81 +x_0=500000 +y_0=300000 +datum=NAD27 +units=m +no_defs"
+  }
+]
+```
+
 ## [Basemaps](#basemaps)
+
 Various basemaps may be included on the map, by listing the basemap IDs as shown below. The first basemap listed is the default.
 
 `"basemaps" : ['esriStreets', 'MapboxLight', 'OpenStreetMap']`
 
 [Esri basemaps](https://developers.arcgis.com/javascript/3/jsapi/esri.basemaps-amd.html):
- - `esriStreets`
- - `esriTopographic`
- - `esriImagery`
- - `esriShadedRelief`
- - `esriTerrain`
- - `esriGray`
- - `esriDarkGray`
- - `esriNationalGeographic`
- - `esriOceans`
+
+- `esriStreets`
+- `esriTopographic`
+- `esriImagery`
+- `esriShadedRelief`
+- `esriTerrain`
+- `esriGray`
+- `esriDarkGray`
+- `esriNationalGeographic`
+- `esriOceans`
 
 [MapBox basemaps](https://www.mapbox.com/api-documentation/#maps)
+
 - `MapboxStreets`
 - `MapboxLight`
 - `MapboxDark`
@@ -137,14 +197,16 @@ Various basemaps may be included on the map, by listing the basemap IDs as shown
 (MapBox Basemaps require a valid `mapboxKey` parameter in the config file)
 
 [Bing basemaps](https://developers.arcgis.com/javascript/3/jsapi/vetiledlayer-amd.html):
- - `Aerial`
- - `AerialWithLabels`
- - `Road`
+
+- `Aerial`
+- `AerialWithLabels`
+- `Road`
 
 (Bing basemaps require a valid `bing_key` parameter in the config file)
 
 [Leaflet Tiled basemaps](https://leafletjs.com/reference-1.0.2.html#tilelayer):
- - `OpenStreetMap`
+
+- `OpenStreetMap`
 
 ![basemaps screenshot](https://i.imgur.com/ja3Z9q1.png)
 
@@ -228,6 +290,7 @@ For ArcGIS Feature Layers, if this option is specified the layer's ID field must
 - `tooltipField` : `'fieldName'` - for WFS and agsFeatureLayers, you can specify the name of a field to be displayed in a simple tooltip when the user hovers over the feature
 
 **Styling options**
+
 - `style` : style object in [Leaflet format](https://leafletjs.com/reference.html#path-options), which will over-write the default Leaflet styles. Applies to GeoJSON and ArcGIS Feature layers
 - `icon` : specify a marker [icon](https://leafletjs.com/reference.html#icon) for GeoJSON and ArcGIS Feature layers
 - `clusterIconClass` - over-write the standard cluster styles, and apply a given style to all cluster icons in this layer. Specify a `background-color` or other CSS properties for this class in order to style the cluster appropriately
@@ -265,7 +328,7 @@ The `exclusive` flag applies radio buttons to layers within that group, such tha
 
 The `toggleAll` flag adds buttons to the top of the Table of Contents, allowing all layers to be toggled on/off quickly.
 
-*Note: this Table of Contents widget does not have the ability to control the layer draw order, so the last layer checked on always draws on top of other layers. This will be improved upon in the future.*
+_Note: this Table of Contents widget does not have the ability to control the layer draw order, so the last layer checked on always draws on top of other layers. This will be improved upon in the future._
 
 ## [Identify](#identify)
 
@@ -298,7 +361,7 @@ Note: If the ArcGIS Server REST API lists an alias against a field, the alias sh
 
 When the Identify tool is activated under the > Tools menu, and the layer is visible, clicking on the map will return the value of the `primaryField` at the location clicked. The results for all identify-able layers are shown in the pull-out sidebar.
 
-*Note: the Identify tool is only enabled if there are visible, identifiable layers on the map.*
+_Note: the Identify tool is only enabled if there are visible, identifiable layers on the map._
 
 ## [Query](#query)
 
@@ -332,15 +395,15 @@ To enable this, add the `queryWidget` object as an option under an ArcGIS Dynami
 - `queries` - an array of query objects, consisting of:
   - `name` - the name of the field to query
   - `alias` - an optional alias to display in the widget
-	- `type` - defaults to text, or use `numeric` to allow the correct syntax for numerical fields. Other field types may be added in future.
-	- `defaultOperator` - the default optional query operator for this query. Options are "=", "starts with", "ends with", "contains", "<", ">"
+  - `type` - defaults to text, or use `numeric` to allow the correct syntax for numerical fields. Other field types may be added in future.
+  - `defaultOperator` - the default optional query operator for this query. Options are "=", "starts with", "ends with", "contains", "<", ">"
 - `outFields` - the list of field objectss to be returned in the query results section. If `outFields` is not specified against the `queryWidget` object, the layer's `outFields` will be used. See the `outFields` section above for more information on the field specification.
 
 Use the Within Current Map Extent or Within Polygon options to restrict the query to the specified extent. Use the Download As CSV option to download the results for processing in Excel.
 
 If the query layer uses a projection other than lat/long, the layer's coordinate system must be added to the config file's `projections` parameter (see above).
 
-*Note: the Query Tool is only enabled if there are queryable layers on the map.*
+_Note: the Query Tool is only enabled if there are queryable layers on the map._
 
 ## [Filter](#filter)
 
@@ -353,6 +416,7 @@ The filter widget allows for dynamic filtering of ArcGIS Feature and Dynamic lay
 The filter honours any `where` or `layerDefs` clauses which have been previously set in the config file.
 
 ## [Custom code](#custom-code)
+
 The file custom.js can be used to personalise the map by writing additional functionality which interacts with the Bootleaf map, but without requiring any changes to the Bootleaf source code. This allows for easier upgrading to the latest Bootleaf release without any rework of your custom code.
 
 This file contains 2 functions, `beforeMapLoads()` and `afterMapLoads()`, which allow you to perform customisations as required.
@@ -366,6 +430,7 @@ Once the `beforeMapLoads` function has completed, the `loadMap` function is call
 Additional [Leaflet plugins](https://leafletjs.com/plugins.html) may also be added to Bootleaf. Download the relevant plugin into the `/src/plugins` directory then add a reference to the plugin in the `index.html` file, following the pattern of the existing plugins. Then use the plugin as required in the `custom.js` file.
 
 ## [ArcGIS authorisation](#authorisation)
+
 If you are using authorised/restricted services from ArcGIS Online, ArcGIS Server or Portal for ArcGIS, there is an option to log the user in.
 
 Within the config file, set the option `requireArcGISLogin: true`. This will display a popup window allowing the user to log in to ArcGIS. Specify the [ArcGIS token generation URL](https://developers.arcgis.com/rest/services-reference/generate-token.htm) in the `tokenUrl` parameter - the default value is for ArcGIS Online tokens.
