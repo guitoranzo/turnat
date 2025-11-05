@@ -2,7 +2,7 @@ var config = {
   requireArcGISLogin: false, // Does the user need to log in to ArcGIS Online or ArcGIS Server?
   tokenUrl: "https://www.arcgis.com/sharing/generateToken", // ArcGIS token generation URL
 
-  title: "TURNAT template map",
+  title: "TURNAT",
   start: {
     // "maxZoom": 16,
     center: [38.203, -99.799],
@@ -11,9 +11,9 @@ var config = {
     zoomControl: false,
   },
   about: {
-    title: "Bootleaf application template",
+    title: "Plantilla de aplicación Bootleaf",
     contents:
-      "<p>This is an open-source version of the excellent <a href='https://github.com/bmcbride/bootleaf'>Bootleaf map </a>started by Bryan McBride.</p><p>It's designed for rapid web map development. See <a href='https://github.com/iag-geo/bootleaf'>https://github.com/iag-geo/bootleaf</a> for more information.</p><p>Chage this message in the config file</p>",
+      "<p>Esta es una versión de código abierto del excelente <a href='https://github.com/bmcbride/bootleaf'>Bootleaf map </a>Iniciado por Bryan McBride.</p><p>Está diseñado para el desarrollo rápido de mapas web. Ver <a href='https://github.com/guitoranzo/turnat'>https://github.com/guitoranzo/turnat</a> para obtener más información.</p><p>Modifique este mensaje en el archivo de configuración.</p>",
   },
   controls: {
     zoom: {
@@ -26,7 +26,8 @@ var config = {
       placeholder: "Search for a location",
       type: "OpenStreetMap", // OpenStreetMap, Google, ArcGIS
       //"suffix": "Australia", // optional keyword to append to every search
-      //"key": "AIzaS....sbW_E", // when using the Google geocoder, include your Google Maps API key (https://developers.google.com/maps/documentation/geocoding/start#get-a-key)
+      //"key": "AIzaS....sbW_E", // when using the Google geocoder, include your
+      // Google Maps API key (https://developers.google.com/maps/documentation/geocoding/start#get-a-key)
     },
     TOC: {
       //https://leafletjs.com/reference-1.0.2.html#control-layers-option
@@ -73,6 +74,7 @@ var config = {
   // 		"shadowAnchor": [4, 62],
   // 		"popupAnchor":  [-3, -76]
   // },
+  // Categories - (world_countries) world_cities_cuba / cuba_provinces cuba_cities_pop
   tocCategories: [
     {
       name: "GeoJSON layers",
@@ -80,16 +82,16 @@ var config = {
     },
     {
       name: "ArcGIS Layers",
-      layers: ["cities", "counties", "railways", "us_states"],
+      layers: ["world_countries", "world_cities_cuba"],
     },
     {
       name: "WMS/WFS layers",
-      layers: ["US_population", "countries"],
+      layers: ["cuba_provinces", "cuba_cities_pop"],
       exclusive: false,
     },
   ],
-  projections: [{ 4269: "+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs " }],
-  // projections: [{ 4326: "+proj=longlat +datum=WGS84 +no_defs" }],
+  // projections: [{ 4269: "+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs " }],
+  projections: [{ 4326: "+proj=longlat +datum=WGS84 +no_defs" }],
   // projections: {
   // 	4326: "+proj=longlat +datum=WGS84 +no_defs",
   // 	2085: "+proj=lcc +lat_1=21.3 +lat_2=23.7 +lat_0=22.5 +lon_0=-81 +x_0=500000 +y_0=300000 +datum=NAD27 +units=m +no_defs",
@@ -104,7 +106,9 @@ var config = {
     fillColor: "#E31A1C",
     stroke: true,
   },
+
   layers: [
+    // theatres, museums
     {
       id: "theatres",
       name: "Theatres",
@@ -158,217 +162,151 @@ var config = {
       // 	"minZoom": 14
       // }
     },
+    // ArcGis
     {
-      id: "cities",
-      name: "US cities (feature)",
-      type: "agsFeatureLayer",
-      cluster: true,
-      showCoverageOnHover: false,
-      removeOutsideVisibleBounds: true,
-      url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0",
-      popup: true,
-      tooltipField: "areaname",
-      outFields: [
-        { name: "areaname", alias: "Name" },
-        { name: "st", alias: "State" },
-        { name: "pop2000", alias: "Population" },
-        { name: "class", alias: "Class" },
-        { name: "objectid" },
-      ],
-      visible: true,
-      queryWidget: {
-        queries: [
-          { name: "areaname", alias: "Name", defaultOperator: "starts with" },
-          { name: "pop2000", alias: "Population", type: "numeric" },
-          { name: "capital", alias: "Capital", type: "boolean" },
-        ],
-        outFields: [
-          { name: "areaname", alias: "Name" },
-          { name: "st", alias: "State" },
-          { name: "pop2000", alias: "Population" },
-          { name: "class", alias: "Class" },
-          { name: "capital", alias: "Capital", type: "boolean" },
-        ],
-      },
-      filters: [
-        { name: "pop2000", alias: "Population", type: "numeric" },
-        { name: "st", alias: "State abbreviation" },
-      ],
-      style: {
-        stroke: true,
-        fillColor: "#00FFFF",
-        fillOpacity: 0.5,
-        radius: 10,
-        weight: 0.5,
-        opacity: 1,
-        color: "#727272",
-      },
-    },
-    {
-      id: "railways",
-      name: "USA Railways (feature)",
-      type: "agsFeatureLayer",
-      url: "https://services.arcgis.com/rOo16HdIMeOBI4Mb/ArcGIS/rest/services/USA_Rail_Network/FeatureServer/0",
-      visible: false,
-      minZoom: 12,
-      useCors: false,
-      popup: true,
-      fields: ["FID", "RROWNER1", "RR_CLASS", "RAILROAD", "ABANDONED"],
-      style: {
-        stroke: true,
-        radius: 10,
-        weight: 2,
-        opacity: 1,
-        color: "#FF0000",
-      },
-      queryWidget: {
-        queries: [{ name: "RAILROAD", alias: "Name" }],
-        outFields: [
-          { name: "RAILROAD", alias: "Name" },
-          { name: "RROWNER1", alias: "Owner" },
-        ],
-        maxAllowableOffset: 10,
-      },
-    },
-    {
-      id: "counties",
-      name: "Counties (dynamic)",
-      type: "agsDynamicLayer",
-      url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/",
-      layers: [3],
-      minZoom: 6,
-      format: "png24",
-      transparent: true,
-      //"layerDefs": {3:"POP2000 > 1000000"},
-      useCors: false,
+      id: "world_countries",
+      name: "World Countries",
+      type: "Feature Layer",
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/World_Countries/FeatureServer/0",
+      minZoom: 0,
+      maxZoom: 20,
+      useCors: true,
       visible: true,
       identify: {
-        layerLabel: "Census counties",
-        layerName: "Coarse Counties",
-        primaryField: "NAME",
+        layerLabel: "Countries",
+        layerName: "World Countries",
+        primaryField: "COUNTRY",
         outFields: [
-          { name: "STATE_NAME", alias: "State" },
-          { name: "POP2007", alias: "Population" },
+          { name: "COUNTRY", alias: "Country" },
+          { name: "POP_EST", alias: "Estimated Population" },
+          { name: "CONTINENT", alias: "Continent" },
+          { name: "ISO_A3", alias: "ISO Code" },
         ],
-        maxAllowableOffset: 0.001,
+        maxAllowableOffset: 1000, // ajustado para escala global
       },
       queryWidget: {
         queries: [
-          { name: "NAME", alias: "County name" },
-          { name: "STATE_NAME", alias: "State name" },
-          { name: "POP2000", alias: "Population", type: "numeric" },
+          { name: "COUNTRY", alias: "Country name", type: "text" },
+          { name: "CONTINENT", alias: "Continent", type: "text" },
+          { name: "POP_EST", alias: "Population", type: "numeric" },
         ],
         outFields: [
-          { name: "NAME", alias: "County name" },
-          { name: "STATE_NAME", alias: "State name" },
+          { name: "COUNTRY", alias: "Country" },
+          { name: "CONTINENT", alias: "Continent" },
           {
-            name: "POP2000",
+            name: "POP_EST",
             alias: "Population",
             thousands: true,
-            hidden: true,
+            format: "number",
           },
         ],
-        layerIndex: 3,
-        maxAllowableOffset: 0.001,
-      },
-      filters: [{ name: "POP2000", alias: "Population", type: "numeric" }],
-    },
-    {
-      id: "us_states",
-      name: "US States, Pop > 5m (dyn)",
-      type: "agsDynamicLayer",
-      url: "https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/",
-      layers: [5],
-      format: "png24",
-      transparent: true,
-      // "layerDefs": {5:"POP2007 > 5000000"},
-      useCors: false,
-      visible: true,
-      identify: {
-        layerName: "states",
-        primaryField: "STATE_NAME",
-        outFields: [
-          { name: "STATE_NAME", alias: "State" },
-          { name: "POP2007", alias: "Population", thousands: true },
-          { name: "POP07_SQMI", alias: "Population density", decimals: 0 },
-        ],
-        maxAllowableOffset: 0.001,
-      },
-      queryWidget: {
-        queries: [
-          { name: "STATE_NAME", alias: "State name" },
-          { name: "POP2000", alias: "Population", type: "numeric" },
-        ],
-        outFields: [
-          { name: "STATE_NAME", alias: "State name" },
-          { name: "POP2000", alias: "Population", thousands: true },
-          { name: "MALES", alias: "No. Males", thousands: true },
-          { name: "FEMALES", alias: "No. Females", thousands: true },
-          { name: "SQMI", alias: "Area (sqmi)", thousands: true, decimals: 1 },
-        ],
-        layerIndex: 5,
-        maxAllowableOffset: 0.001,
+        layerIndex: 0,
+        maxAllowableOffset: 1000,
       },
       filters: [
-        { name: "MED_AGE", alias: "Median age", type: "numeric" },
-        { name: "POP2000", alias: "Population", type: "numeric" },
+        { name: "POP_EST", alias: "Population", type: "numeric" },
+        { name: "CONTINENT", alias: "Continent", type: "text" },
       ],
-      maxZoom: 10,
     },
     {
-      id: "US_population",
-      name: "US Population (WMS)",
-      type: "wmsTiledLayer",
-      url: "https://demo.geo-solutions.it/geoserver/wfs",
-      layers: "topp:states",
-      EPSG: 4326,
-      visible: false,
-      format: "image/png",
-      transparent: true,
-      geomField: "the_geom",
+      id: "world_cities_cuba",
+      name: "Ciudades de Cuba (World Cities)",
+      type: "agsFeatureLayer",
+      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/World_Cities/FeatureServer/0",
+      layerDefs: { 0: "COUNTRY = 'Cuba'" },
+      popup: true,
+      tooltipField: "CITY_NAME",
+      outFields: [
+        { name: "CITY_NAME", alias: "Ciudad" },
+        { name: "COUNTRY", alias: "País" },
+        { name: "POP_RANK", alias: "Rango poblacional" },
+      ],
+      visible: true,
+      style: {
+        fillColor: "#ff6600",
+        fillOpacity: 0.7,
+        radius: 7,
+        color: "#cc5200",
+        weight: 1,
+      },
+      cluster: false,
+    },
+    // WMS
+    {
+      id: "cuba_provinces",
+      name: "Provincias de Cuba (WFS)",
+      type: "WFS",
+      url: "https://demo.boundlessgeo.com/geoserver/ows",
+      typeName: "ne:ne_10m_admin_1_states_provinces",
+      visible: true,
+      popup: true,
+      geomField: "geom",
+      cqlFilter: "iso_3166_2 LIKE 'CU-%'", // Filtra solo provincias de Cuba
+      outFields: [
+        { name: "name", alias: "Provincia" },
+        { name: "iso_3166_2", alias: "Código ISO" },
+        { name: "woe_name", alias: "Nombre alternativo" },
+      ],
       queryWidget: {
-        queries: [
-          { name: "STATE_NAME", alias: "Name" },
-          { name: "STATE_ABBR", alias: "Abbreviation" },
+        queries: [{ name: "name", alias: "Nombre de provincia", type: "text" }],
+        outFields: [
+          { name: "name", alias: "Provincia" },
+          { name: "iso_3166_2", alias: "Código" },
         ],
       },
       identify: {
-        layerName: "states",
-        buffer: 10,
+        layerName: "Provincias de Cuba",
+        buffer: 5000,
         outFields: [
-          { name: "STATE_NAME", alias: "Name" },
-          { name: "STATE_ABBR", alias: "Abbreviation" },
-          { name: "FAMILIES", alias: "Num families", thousands: true },
+          { name: "name", alias: "Provincia" },
+          { name: "iso_3166_2", alias: "Código ISO" },
         ],
       },
-      outFields: [
-        { name: "STATE_NAME", alias: "Name X" },
-        { name: "STATE_ABBR", alias: "Abbreviation" },
-        { name: "FAMILIES", alias: "No. Families", thousands: true },
-        {
-          name: "LAND_KM",
-          alias: "sq. km",
-          thousands: true,
-          decimals: 1,
-          hidden: true,
-        },
-      ],
     },
     {
-      id: "countries",
-      name: "World countries (WFS)",
+      id: "cuba_cities_pop",
+      name: "Ciudades de Cuba con población (WFS)",
       type: "WFS",
-      url: "https://demo.boundlessgeo.com/geoserver/opengeo/wfs",
-      typeName: "opengeo:countries",
-      visible: false,
+      url: "https://demo.boundlessgeo.com/geoserver/ows",
+      typeName: "ne:ne_10m_populated_places",
+      visible: true,
       popup: true,
-      geomField: "the_geom",
+      geomField: "geom",
+      cqlFilter: "adm0name = 'Cuba'",
       outFields: [
-        { name: "name", alias: "Name" },
-        { name: "economy", alias: "Economy" },
-        { name: "income_grp", alias: "Income Group" },
-        { name: "pop_est", alias: "Population estimate", thousands: true },
+        { name: "name", alias: "Ciudad" },
+        { name: "pop_est", alias: "Población estimada", thousands: true },
+        { name: "adm1name", alias: "Provincia" },
       ],
+      queryWidget: {
+        queries: [
+          { name: "name", alias: "Nombre", type: "text" },
+          { name: "pop_est", alias: "Población", type: "numeric" },
+        ],
+        outFields: [
+          { name: "name", alias: "Ciudad" },
+          { name: "pop_est", alias: "Población", thousands: true },
+          { name: "adm1name", alias: "Provincia" },
+        ],
+      },
+      identify: {
+        layerName: "Ciudades de Cuba",
+        buffer: 1000,
+        outFields: [
+          { name: "name", alias: "Ciudad" },
+          { name: "pop_est", alias: "Población" },
+          { name: "adm1name", alias: "Provincia" },
+        ],
+      },
+      style: {
+        stroke: true,
+        fillColor: "#cc0000",
+        fillOpacity: 0.6,
+        radius: 8,
+        weight: 1,
+        opacity: 1,
+        color: "#660000",
+      },
     },
   ],
 };
