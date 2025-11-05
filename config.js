@@ -74,7 +74,7 @@ var config = {
   // 		"shadowAnchor": [4, 62],
   // 		"popupAnchor":  [-3, -76]
   // },
-  // Categories - (world_countries) world_cities_cuba / cuba_provinces cuba_cities_pop
+  // Categories - (world_countries) world_cities_cuba / cuba_provinces*** cuba_cities_pop***
   tocCategories: [
     {
       name: "GeoJSON layers",
@@ -162,11 +162,11 @@ var config = {
       // 	"minZoom": 14
       // }
     },
-    // ArcGis
+    // ArcGIS Layers
     {
       id: "world_countries",
       name: "World Countries",
-      type: "Feature Layer",
+      type: "agsFeatureLayer", // Usa el tipo correcto para esri-leaflet
       url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/World_Countries/FeatureServer/0",
       minZoom: 0,
       maxZoom: 20,
@@ -178,48 +178,39 @@ var config = {
         primaryField: "COUNTRY",
         outFields: [
           { name: "COUNTRY", alias: "Country" },
-          { name: "POP_EST", alias: "Estimated Population" },
           { name: "CONTINENT", alias: "Continent" },
-          { name: "ISO_A3", alias: "ISO Code" },
+          { name: "ISO_CC", alias: "ISO Code" },
         ],
-        maxAllowableOffset: 1000, // ajustado para escala global
+        maxAllowableOffset: 1000,
       },
       queryWidget: {
         queries: [
           { name: "COUNTRY", alias: "Country name", type: "text" },
           { name: "CONTINENT", alias: "Continent", type: "text" },
-          { name: "POP_EST", alias: "Population", type: "numeric" },
         ],
         outFields: [
           { name: "COUNTRY", alias: "Country" },
           { name: "CONTINENT", alias: "Continent" },
-          {
-            name: "POP_EST",
-            alias: "Population",
-            thousands: true,
-            format: "number",
-          },
+          { name: "ISO_CC", alias: "ISO Code" },
         ],
         layerIndex: 0,
         maxAllowableOffset: 1000,
       },
-      filters: [
-        { name: "POP_EST", alias: "Population", type: "numeric" },
-        { name: "CONTINENT", alias: "Continent", type: "text" },
-      ],
+      filters: [{ name: "CONTINENT", alias: "Continent", type: "text" }],
     },
     {
       id: "world_cities_cuba",
       name: "Ciudades de Cuba (World Cities)",
       type: "agsFeatureLayer",
       url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/World_Cities/FeatureServer/0",
-      layerDefs: { 0: "COUNTRY = 'Cuba'" },
+      layerDefs: { 0: "CNTRY_NAME = 'Cuba'" },
       popup: true,
       tooltipField: "CITY_NAME",
       outFields: [
         { name: "CITY_NAME", alias: "Ciudad" },
-        { name: "COUNTRY", alias: "País" },
-        { name: "POP_RANK", alias: "Rango poblacional" },
+        { name: "CNTRY_NAME", alias: "País" },
+        { name: "POP", alias: "Población" },
+        { name: "POP_RANK", alias: "Rango" },
       ],
       visible: true,
       style: {
@@ -231,7 +222,7 @@ var config = {
       },
       cluster: false,
     },
-    // WMS
+    // WMS/WFS layers
     {
       id: "cuba_provinces",
       name: "Provincias de Cuba (WFS)",
@@ -241,27 +232,11 @@ var config = {
       visible: true,
       popup: true,
       geomField: "geom",
-      cqlFilter: "iso_3166_2 LIKE 'CU-%'", // Filtra solo provincias de Cuba
+      cqlFilter: "iso_3166_2 LIKE 'CU-%'",
       outFields: [
         { name: "name", alias: "Provincia" },
         { name: "iso_3166_2", alias: "Código ISO" },
-        { name: "woe_name", alias: "Nombre alternativo" },
       ],
-      queryWidget: {
-        queries: [{ name: "name", alias: "Nombre de provincia", type: "text" }],
-        outFields: [
-          { name: "name", alias: "Provincia" },
-          { name: "iso_3166_2", alias: "Código" },
-        ],
-      },
-      identify: {
-        layerName: "Provincias de Cuba",
-        buffer: 5000,
-        outFields: [
-          { name: "name", alias: "Provincia" },
-          { name: "iso_3166_2", alias: "Código ISO" },
-        ],
-      },
     },
     {
       id: "cuba_cities_pop",
@@ -278,34 +253,12 @@ var config = {
         { name: "pop_est", alias: "Población estimada", thousands: true },
         { name: "adm1name", alias: "Provincia" },
       ],
-      queryWidget: {
-        queries: [
-          { name: "name", alias: "Nombre", type: "text" },
-          { name: "pop_est", alias: "Población", type: "numeric" },
-        ],
-        outFields: [
-          { name: "name", alias: "Ciudad" },
-          { name: "pop_est", alias: "Población", thousands: true },
-          { name: "adm1name", alias: "Provincia" },
-        ],
-      },
-      identify: {
-        layerName: "Ciudades de Cuba",
-        buffer: 1000,
-        outFields: [
-          { name: "name", alias: "Ciudad" },
-          { name: "pop_est", alias: "Población" },
-          { name: "adm1name", alias: "Provincia" },
-        ],
-      },
       style: {
-        stroke: true,
         fillColor: "#cc0000",
         fillOpacity: 0.6,
         radius: 8,
-        weight: 1,
-        opacity: 1,
         color: "#660000",
+        weight: 1,
       },
     },
   ],
