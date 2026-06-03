@@ -6,7 +6,7 @@ var config = {
   start: {
     // "maxZoom": 16,
     center: [38.203, -99.799],
-    zoom: 4,
+    zoom: 6,
     attributionControl: true,
     zoomControl: false,
   },

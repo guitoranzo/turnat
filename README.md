@@ -1,4 +1,4 @@
-# TURNAT
+# [TURNAT](https://guitoranzo.github.io/turnat/)
 
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -11,6 +11,12 @@
 - [Custom code](#custom-code)
 - [ArcGIS authorisation](#authorisation)
 - [Known issues](#issues)
+
+## 📱 Acceso Rápido
+
+[![QR Code](https://guitoranzo.github.io/turnat/img/qrcode.png)](https://guitoranzo.github.io/turnat/)  
+**Escanea el código QR** para visitar la página.
+
 
 ### Introduction
 
