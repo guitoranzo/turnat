@@ -5,7 +5,7 @@ var config = {
   title: "TURNAT",
   start: {
     // "maxZoom": 16,
-    center: [38.203, -99.799],
+    center: [-82.8015, 21.8855],
     zoom: 6,
     attributionControl: true,
     zoomControl: false,
